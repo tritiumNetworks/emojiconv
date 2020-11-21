@@ -26,14 +26,14 @@ class eClient extends Client {
       const file = await get(attc.url)
       await m.edit('다운로드 완료, 크기 변경중...')
 
-      const img = await resize(file.body, { width: attc.width * 0.5, height: attc.width * 0.5 })
+      const img = await resize(file.body, { width: attc.width * 0.5, height: attc.height * 0.5 })
       if (img.byteLength > 255999)
         return m.edit('사진의 크기가 너무 큽니다')
 
       m.edit('이모지 이름을 입력하세요')
       const collected = await msg.channel.awaitMessages((mf) => mf.author.id === msg.author.id, { max: 1 })
 
-      const emoji = msg.guild.emojis.create(img, collected.first().content)
+      const emoji = await msg.guild.emojis.create(img, collected.first().content)
       m.edit('완료 :' + emoji.name + ':')
     })
   }
